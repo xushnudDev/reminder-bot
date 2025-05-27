@@ -16,11 +16,12 @@ export class ReminderService {
   async createReminder(chatId: number, timeStr: string, message: string) {
     let time: Date;
 
-    if (/\d+[mhd]/.test(timeStr)) {
+    if (/\d+[smhd]/.test(timeStr)) {
       const unit = timeStr.slice(-1);
       const amount = parseInt(timeStr.slice(0, -1));
       time = new Date();
 
+      if (unit === 's') time.setSeconds(time.getSeconds() + amount);
       if (unit === 'm') time.setMinutes(time.getMinutes() + amount);
       if (unit === 'h') time.setHours(time.getHours() + amount);
       if (unit === 'd') time.setDate(time.getDate() + amount);
