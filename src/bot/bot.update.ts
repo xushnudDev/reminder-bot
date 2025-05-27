@@ -12,7 +12,7 @@ export class ReminderBot {
     if (chat?.type === 'private') {
       const firstName = chat.first_name;
       await ctx.reply(
-        `👋 Salom ${firstName}! Menga /remind buyrug'ini yuboring. Masalan: /remind 10m suv iching!`,
+        `👋 Salom ${firstName}! Menga /remind buyrug'ini yuboring. Masalan: /remind 30m kitob o'qing!`,
       );
     } else {
       await ctx.reply(
@@ -40,9 +40,11 @@ export class ReminderBot {
       return ctx.reply('❌ Chat ID aniqlanmadi.');
     }
 
-    await this.reminderService.createReminder(chatId, time, message);
-    return ctx.reply(`✅ Eslatma saqlandi: "${message}" (${time} dan keyin)`);
+    const reminder = await this.reminderService.createReminder(chatId, time, message);
+
+    return ctx.reply(`✅ Eslatma saqlandi: "${reminder.message}" (${time} dan keyin)`);
   }
+
   @Command('myreminders')
   async myReminders(@Ctx() ctx: Context): Promise<any> {
     const chatId = ctx.chat?.id ?? ctx.from?.id;
@@ -57,7 +59,7 @@ export class ReminderBot {
     }
 
     const list = reminders
-      .map((r) => `🕒 ${r.time.toLocaleString()} – ${r.message} (ID: ${r._id})`)
+      .map((r) => `🕒 ${new Date(r.time).toLocaleString()} – ${r.message} (ID: ${r._id})`)
       .join('\n');
 
     return ctx.reply(list);

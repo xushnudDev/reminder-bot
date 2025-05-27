@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Reminders } from './model';
 import { Model } from 'mongoose';
-import { InjectBot } from 'nestjs-telegraf'; // ✅ Shu joyni qo‘shing
+import { InjectBot } from 'nestjs-telegraf'; 
 import { Telegraf } from 'telegraf';
 import { Cron, CronExpression } from '@nestjs/schedule';
 
@@ -10,7 +10,7 @@ import { Cron, CronExpression } from '@nestjs/schedule';
 export class ReminderService {
   constructor(
     @InjectModel(Reminders.name) private reminderModel: Model<Reminders>,
-    @InjectBot() private readonly bot: Telegraf<any>, // ✅ endi ishlaydi
+    @InjectBot() private readonly bot: Telegraf<any>, 
   ) {}
 
   async createReminder(chatId: number, timeStr: string, message: string) {
@@ -47,7 +47,7 @@ export class ReminderService {
     return result;
   }
 
-  @Cron(CronExpression.EVERY_30_MINUTES)
+  @Cron(CronExpression.EVERY_30_SECONDS)
   async checkReminders() {
     const now = new Date();
     const reminders = await this.reminderModel.find({
